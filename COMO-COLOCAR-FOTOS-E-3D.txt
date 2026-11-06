@@ -1,0 +1,93 @@
+COMO COLOCAR SEUS PRODUTOS NO SHOWROOM 3D
+==========================================
+
+Existem 2 jeitos. O JEITO 1 é o mais fácil e não precisa de nenhum aplicativo.
+
+
+-------------------------------------------------
+JEITO 1 — FOTOS 360° (recomendado para começar)
+-------------------------------------------------
+O cliente arrasta o dedo/mouse e o produto "gira", passando pelas fotos.
+
+O que você precisa:
+  - Um celular
+  - Uma mesa e um fundo liso (parede branca, lençol ou cartolina)
+  - De preferência um prato giratório (aqueles de bolo servem)
+
+Passo a passo:
+  1. Coloque o produto no centro do prato giratório, com o fundo liso atrás.
+  2. Apoie o celular parado (pilha de livros ou tripé), sempre na mesma
+     altura e distância. NÃO mexa o celular durante as fotos.
+  3. Tire 1 foto. Gire o prato um pouquinho (faça uma marquinha de
+     caneta no prato para ajudar: 24 passos iguais = 1 volta).
+  4. Repita até dar a volta completa. Dá umas 24 fotos.
+     (Mais fotos = giro mais suave. 36 fotos fica ótimo.)
+  5. Passe as fotos para o computador e RENOMEIE em ordem:
+        1.jpg, 2.jpg, 3.jpg ... 24.jpg
+     Dica (Windows): selecione todas, aperte F2, digite um nome e
+     Enter. Depois é só ajustar para ficar só o número.
+  6. Crie uma pasta dentro de "fotos360" com o nome do produto,
+     sem espaços e sem acento. Exemplo:  fotos360/tambor-mdi/
+  7. Coloque as fotos dentro dessa pasta.
+  8. Abra o arquivo "produtos.js" com o Bloco de Notas, ache o produto,
+     e troque a linha   forma: "tambor"   por:
+
+        fotos360: { pasta: "fotos360/tambor-mdi/", quantidade: 24 }
+
+     (coloque o número certo de fotos em "quantidade")
+     Se as fotos forem .png em vez de .jpg, use:
+        fotos360: { pasta: "fotos360/tambor-mdi/", quantidade: 24, extensao: "png" }
+  9. Salve e abra o index.html. Pronto! A primeira foto também vira a
+     imagem do cartão do produto.
+
+Dicas para ficar bonito:
+  - Boa luz, sem sombra forte (perto de uma janela, sem sol direto).
+  - Use o mesmo enquadramento em todas as fotos.
+  - Celular na horizontal (deitado).
+
+
+-------------------------------------------------
+JEITO 2 — MODELO 3D DE VERDADE (escaneado pelo celular)
+-------------------------------------------------
+O cliente gira o produto em qualquer direção, inclusive por cima.
+
+Aplicativos gratuitos (ou com versão grátis) que fazem isso:
+  - Polycam          (Android e iPhone)
+  - KIRI Engine      (Android e iPhone)
+  - Luma AI          (iPhone e Android)
+  - iPhone com câmera LiDAR: o próprio Polycam funciona muito bem.
+
+Passo a passo:
+  1. Abra o app e escolha o modo "Foto" / "Photo mode" / "Objeto".
+  2. Ande devagar em volta do produto tirando fotos (o app guia você),
+     uma volta na altura do produto e outra um pouco mais de cima.
+  3. Espere o app processar (pode levar alguns minutos).
+  4. Exporte no formato  GLB  (às vezes aparece como "glTF Binary").
+  5. Coloque o arquivo na pasta "modelos". Exemplo: modelos/tambor.glb
+  6. No "produtos.js", troque a linha   forma: "tambor"   por:
+
+        modelo: "modelos/tambor.glb"
+
+  7. O site centraliza e ajusta o tamanho do modelo sozinho.
+
+IMPORTANTE: modelos .glb só aparecem quando o site está PUBLICADO
+na internet (hospedagem). Se você só der dois cliques no index.html,
+o navegador bloqueia. As fotos 360° funcionam nos dois casos.
+
+
+-------------------------------------------------
+QUER TESTAR ANTES DE MEXER NOS ARQUIVOS?
+-------------------------------------------------
+Abra o site e ARRASTE as fotos (todas de uma vez) ou o arquivo .glb
+para cima do quadro do showroom. Ele mostra uma prévia na hora.
+Isso não salva nada: é só para ver como vai ficar.
+
+
+-------------------------------------------------
+DEU ERRO?
+-------------------------------------------------
+- "Fotos não encontradas": confira o nome da pasta no produtos.js
+  (tem que terminar com / ) e se as fotos são 1.jpg, 2.jpg...
+- Sumiram todos os produtos: faltou uma vírgula, aspas ou chave no
+  produtos.js. Desfaça a última mudança (Ctrl+Z) e tente de novo.
+- Letras maiúsculas importam: "Foto1.JPG" é diferente de "1.jpg".

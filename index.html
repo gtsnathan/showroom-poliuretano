@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polisystem — Sistemas de Poliuretano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1014; --bg2:#111a20; --card:#151f27; --line:#22313c;
+    --txt:#e8eef2; --mut:#94a6b3; --acc:#f5a524; --acc2:#3fc1c9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.15}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,16,20,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{font-family:"Space Grotesk";font-weight:700;font-size:1.35rem;letter-spacing:.5px;display:flex;align-items:center;gap:10px}
+  .logo i{width:26px;height:26px;border-radius:7px;background:conic-gradient(var(--acc),var(--acc2),var(--acc));display:inline-block}
+  .links{display:flex;gap:28px;font-size:.95rem;color:var(--mut)}
+  .links a:hover{color:var(--txt)}
+  .btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:600;font-size:.95rem;transition:.2s}
+  .btn-acc{background:var(--acc);color:#111}
+  .btn-acc:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .btn-ghost{border:1px solid var(--line);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--acc2)}
+  .menu-btn{display:none;background:none;border:0;color:var(--txt);font-size:1.6rem;cursor:pointer}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;padding:110px 0 90px}
+  .hero::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(600px 400px at 80% 20%,rgba(63,193,201,.18),transparent 70%),
+               radial-gradient(500px 380px at 15% 80%,rgba(245,165,36,.14),transparent 70%)}
+  .cells{position:absolute;right:-60px;top:40px;width:560px;height:560px;opacity:.5}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+  .tag{display:inline-block;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--acc2);border:1px solid rgba(63,193,201,.35);padding:6px 12px;border-radius:99px;margin-bottom:22px}
+  .hero h1{font-size:clamp(2.3rem,5vw,3.8rem);margin-bottom:22px}
+  .hero h1 span{color:var(--acc)}
+  .hero p{color:var(--mut);font-size:1.1rem;max-width:560px;margin-bottom:34px}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+  .stat b{font-family:"Space Grotesk";font-size:1.9rem;color:var(--acc);display:block}
+  .stat small{color:var(--mut)}
+
+  /* SECTIONS */
+  section{padding:90px 0}
+  .head{max-width:640px;margin-bottom:46px}
+  .head .tag{margin-bottom:14px}
+  .head h2{font-size:clamp(1.8rem,3.5vw,2.6rem);margin-bottom:12px}
+  .head p{color:var(--mut)}
+
+  /* PRODUTOS */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+  .chip{background:var(--card);border:1px solid var(--line);color:var(--mut);padding:9px 16px;border-radius:99px;cursor:pointer;font-size:.9rem;transition:.2s}
+  .chip.on,.chip:hover{border-color:var(--acc);color:var(--txt)}
+  .chip.on{background:rgba(245,165,36,.12)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+  .prod{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s;display:flex;flex-direction:column}
+  .prod:hover{transform:translateY(-4px);border-color:var(--acc2)}
+  .prod .art{height:150px;position:relative;display:flex;align-items:flex-end;padding:18px}
+  .prod .art svg{position:absolute;inset:0;width:100%;height:100%}
+  .badge{position:relative;font-size:.75rem;font-weight:600;background:rgba(0,0,0,.45);padding:5px 10px;border-radius:7px;letter-spacing:.5px}
+  .prod .body{padding:22px;flex:1;display:flex;flex-direction:column}
+  .prod h3{font-size:1.25rem;margin-bottom:8px}
+  .prod p{color:var(--mut);font-size:.94rem;margin-bottom:16px}
+  .prod ul{list-style:none;display:grid;gap:7px;margin-bottom:20px;font-size:.9rem}
+  .prod li::before{content:"▸ ";color:var(--acc)}
+  .prod .more{margin-top:auto;color:var(--acc2);font-weight:600;font-size:.92rem}
+  .prod.hide{display:none}
+
+  /* SETORES */
+  .sectors{background:var(--bg2);border-block:1px solid var(--line)}
+  .sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .sec{border:1px solid var(--line);border-radius:16px;padding:26px 20px;text-align:center;background:var(--card);transition:.2s}
+  .sec:hover{border-color:var(--acc)}
+  .sec .ic{font-size:2rem;margin-bottom:12px}
+  .sec h3{font-size:1.05rem;margin-bottom:6px}
+  .sec p{color:var(--mut);font-size:.85rem}
+
+  /* DIFERENCIAIS */
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .f{padding:28px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(160deg,var(--card),var(--bg))}
+  .f .n{font-family:"Space Grotesk";color:var(--acc2);font-size:.9rem;margin-bottom:12px}
+  .f h3{margin-bottom:8px}
+  .f p{color:var(--mut);font-size:.93rem}
+
+  /* CONTATO */
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  .info{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px}
+  .info div{margin-bottom:20px}
+  .info small{color:var(--mut);display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+  form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px;display:grid;gap:14px}
+  input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--txt);padding:13px 14px;border-radius:10px;font:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc2)}
+  textarea{min-height:110px;resize:vertical}
+  .ok{display:none;color:var(--acc2);font-weight:600}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--mut);font-size:.85rem}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal.open{display:flex}
+  .mbox{background:var(--bg2);border:1px solid var(--line);border-radius:20px;max-width:560px;width:100%;padding:32px;position:relative}
+  .mbox h3{font-size:1.5rem;margin-bottom:10px}
+  .mbox p{color:var(--mut);margin-bottom:16px}
+  .mbox table{width:100%;border-collapse:collapse;font-size:.92rem;margin-bottom:22px}
+  .mbox td{padding:9px 0;border-bottom:1px solid var(--line)}
+  .mbox td:first-child{color:var(--mut)}
+  .x{position:absolute;top:16px;right:18px;background:none;border:0;color:var(--mut);font-size:1.5rem;cursor:pointer}
+
+  /* SHOWROOM 3D */
+  .show{display:grid;grid-template-columns:1fr 300px;gap:20px}
+  .stage{position:relative;height:540px;border-radius:20px;overflow:hidden;border:1px solid var(--line);
+    background:radial-gradient(circle at 50% 35%,#1d2b35,#0b1014 75%)}
+  .stage canvas{display:block;width:100%;height:100%;cursor:grab}
+  .stage canvas:active{cursor:grabbing}
+  .hud{position:absolute;left:18px;top:16px;right:18px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+  .hud h3{font-size:1.3rem}
+  .hud small{color:var(--acc2);letter-spacing:1px;text-transform:uppercase;font-size:.75rem}
+  .hud,.ctrls,.hint{z-index:3}
+  .ctrls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+  .ctrls button{background:rgba(11,16,20,.75);border:1px solid var(--line);color:var(--txt);padding:9px 14px;border-radius:10px;cursor:pointer;font:inherit;font-size:.85rem;backdrop-filter:blur(6px)}
+  .ctrls button:hover,.ctrls button.on{border-color:var(--acc)}
+  .hint{position:absolute;right:18px;bottom:22px;color:var(--mut);font-size:.8rem}
+  .loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--mut)}
+  .plist{display:grid;gap:10px;align-content:start;max-height:540px;overflow:auto}
+  .pitem{text-align:left;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:14px;padding:14px 16px;cursor:pointer;font:inherit;transition:.2s}
+  .pitem small{display:block;color:var(--mut);font-size:.78rem;margin-bottom:2px}
+  .pitem:hover{border-color:var(--acc2)}
+  .pitem.on{border-color:var(--acc);background:rgba(245,165,36,.08)}
+  .b3d{margin-top:auto;display:flex;justify-content:space-between;align-items:center}
+  .b3d button{background:none;border:1px solid var(--line);color:var(--acc);padding:7px 12px;border-radius:9px;cursor:pointer;font:inherit;font-size:.85rem}
+  .b3d button:hover{border-color:var(--acc)}
+  @media(max-width:900px){.show{grid-template-columns:1fr}.stage{height:400px}.plist{grid-template-columns:repeat(2,1fr);max-height:none}.hint{display:none}}
+
+  .stage #spin{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;cursor:grab;user-select:none;touch-action:none;padding:60px 20px;transition:transform .15s}
+  .drop{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;background:rgba(245,165,36,.12);border:2px dashed var(--acc);border-radius:20px;color:var(--txt);font-weight:600;z-index:5}
+  .drop.on{display:flex}
+  .msg3d{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--mut);text-align:center;max-width:80%;font-size:.9rem}
+  .reveal{opacity:0;transform:translateY(24px);transition:.7s}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .hero .wrap,.contact{grid-template-columns:1fr}
+    .sgrid{grid-template-columns:repeat(2,1fr)}
+    .feat{grid-template-columns:1fr}
+    .links{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--bg2);padding:20px 24px;border-bottom:1px solid var(--line)}
+    .links.open{display:flex}
+    .menu-btn{display:block}
+    nav .btn{display:none}
+    .cells{width:340px;height:340px;opacity:.25}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo"><i></i>POLISYSTEM</a>
+    <div class="links" id="links">
+      <a href="#produtos">Produtos</a>
+      <a href="#showroom">Showroom 3D</a>
+      <a href="#setores">Setores</a>
+      <a href="#diferenciais">Diferenciais</a>
+      <a href="#contato">Contato</a>
+    </div>
+    <a href="#contato" class="btn btn-acc">Solicitar orçamento</a>
+    <button class="menu-btn" onclick="document.getElementById('links').classList.toggle('open')" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="cells" viewBox="0 0 400 400" aria-hidden="true">
+    <defs><radialGradient id="g"><stop offset="0" stop-color="#3fc1c9" stop-opacity=".5"/><stop offset="1" stop-color="#3fc1c9" stop-opacity="0"/></radialGradient></defs>
+    <g fill="none" stroke="#3fc1c9" stroke-opacity=".35">
+      <circle cx="120" cy="110" r="60"/><circle cx="230" cy="90" r="45"/><circle cx="300" cy="180" r="70"/>
+      <circle cx="170" cy="220" r="55"/><circle cx="90" cy="290" r="40"/><circle cx="250" cy="300" r="50"/>
+      <circle cx="340" cy="300" r="30"/><circle cx="60" cy="190" r="28"/>
+    </g>
+    <circle cx="200" cy="200" r="180" fill="url(#g)" opacity=".25"/>
+  </svg>
+  <div class="wrap">
+    <div>
+      <span class="tag">Porto Alegre · RS</span>
+      <h1>Sistemas de <span>poliuretano</span> sob medida para a sua indústria</h1>
+      <p>Formulamos e fabricamos sistemas de poliuretano rígido e semi-rígido para refrigeração, construção civil, indústria moveleira, naval e de transportes.</p>
+      <div class="cta">
+        <a href="#produtos" class="btn btn-acc">Ver produtos</a>
+        <a href="#contato" class="btn btn-ghost">Falar com um especialista</a>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>PU</b><small>Rígido e semi-rígido</small></div>
+      <div class="stat"><b>5</b><small>Setores atendidos</small></div>
+      <div class="stat"><b>A + B</b><small>Poliol e isocianato</small></div>
+      <div class="stat"><b>RS</b><small>Fábrica própria em Porto Alegre</small></div>
+    </div>
+  </div>
+</header>
+
+<section id="produtos">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="tag">Linha de produtos</span>
+      <h2>Soluções em poliuretano</h2>
+      <p>Cada sistema é formulado para o processo e a aplicação do cliente. Clique em um produto para ver detalhes.</p>
+    </div>
+    <div class="filters">
+      <button class="chip on" data-f="all">Todos</button>
+      <button class="chip" data-f="rigido">Rígido</button>
+      <button class="chip" data-f="semi">Semi-rígido</button>
+      <button class="chip" data-f="mp">Matérias-primas</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="showroom" class="sectors">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="tag">Showroom 3D</span>
+      <h2>Veja cada produto de todos os ângulos</h2>
+      <p>Arraste para girar, use o scroll ou a pinça para aproximar. As peças mostram a espuma em corte, como ela fica dentro da aplicação.</p>
+    </div>
+    <div class="show">
+      <div class="stage" id="stage">
+        <div class="loading" id="loading">Carregando showroom…</div>
+        <div class="hud"><div><small id="sb"></small><h3 id="sn"></h3></div></div>
+        <div class="ctrls">
+          <button id="bRot" class="on">⟳ Girar sozinho</button>
+          <button id="bReset">Centralizar</button>
+          <button id="bInfo">Detalhes</button>
+        </div>
+        <img id="spin" alt="" draggable="false">
+        <div class="drop" id="drop">Solte aqui o arquivo .glb ou as fotos 360° para testar</div>
+        <span class="hint">Arraste · Zoom · Teste: arraste fotos ou .glb aqui</span>
+      </div>
+      <div class="plist" id="plist"></div>
+    </div>
+  </div>
+</section>
+
+<section id="setores">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="tag">Aplicações</span>
+      <h2>Setores que atendemos</h2>
+    </div>
+    <div class="sgrid">
+      <div class="sec reveal"><div class="ic">❄️</div><h3>Refrigeração</h3><p>Isolamento de câmaras, balcões e equipamentos</p></div>
+      <div class="sec reveal"><div class="ic">🏗️</div><h3>Construção civil</h3><p>Painéis, telhas e isolamento termoacústico</p></div>
+      <div class="sec reveal"><div class="ic">🪑</div><h3>Moveleira</h3><p>Peças moldadas e componentes</p></div>
+      <div class="sec reveal"><div class="ic">⚓</div><h3>Naval</h3><p>Flutuação e preenchimento estrutural</p></div>
+      <div class="sec reveal"><div class="ic">🚚</div><h3>Transportes</h3><p>Baús frigoríficos e carrocerias</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="diferenciais">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="tag">Por que a Polisystem</span>
+      <h2>Formulação sob medida, suporte de perto</h2>
+    </div>
+    <div class="feat">
+      <div class="f reveal"><div class="n">01</div><h3>Desenvolvimento personalizado</h3><p>Sistemas ajustados à densidade, ao tempo de reação e ao processo de cada cliente.</p></div>
+      <div class="f reveal"><div class="n">02</div><h3>Assistência técnica</h3><p>Acompanhamento na aplicação, regulagem de máquinas e testes de desempenho.</p></div>
+      <div class="f reveal"><div class="n">03</div><h3>Produção local</h3><p>Fábrica em Porto Alegre, com agilidade de entrega para o Sul e todo o Brasil.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contato" class="sectors">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="tag">Contato</span>
+      <h2>Vamos desenvolver o seu sistema</h2>
+      <p>Conte sua aplicação e nossa equipe técnica retorna com uma proposta.</p>
+    </div>
+    <div class="contact">
+      <div class="info reveal">
+        <div><small>Empresa</small>Polisystem Indústria e Comércio de Poliuretano Ltda.</div>
+        <div><small>Endereço</small>Av. José Lutzenberger, 170 – Anchieta<br>Porto Alegre – RS · CEP 90200-140</div>
+        <div><small>Telefone</small>(51) 0000-0000</div>
+        <div><small>E-mail</small>contato@empresa.com.br</div>
+        <div><small>CNPJ</small>05.316.354/0001-63</div>
+      </div>
+      <form class="reveal" onsubmit="event.preventDefault();this.querySelector('.ok').style.display='block';this.reset();">
+        <input required placeholder="Nome">
+        <input required type="email" placeholder="E-mail">
+        <input placeholder="Empresa">
+        <select required>
+          <option value="">Setor de aplicação</option>
+          <option>Refrigeração</option><option>Construção civil</option>
+          <option>Moveleira</option><option>Naval</option><option>Transportes</option><option>Outro</option>
+        </select>
+        <textarea placeholder="Descreva sua aplicação"></textarea>
+        <button class="btn btn-acc" type="submit">Enviar solicitação</button>
+        <span class="ok">Mensagem enviada! Retornaremos em breve.</span>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© Polisystem Indústria e Comércio de Poliuretano Ltda.</span>
+    <span>Porto Alegre · RS</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeM()">
+  <div class="mbox">
+    <button class="x" onclick="closeM()">×</button>
+    <h3 id="mt"></h3>
+    <p id="md"></p>
+    <table id="mtab"></table>
+    <a href="#contato" class="btn btn-acc" onclick="closeM()">Solicitar orçamento</a>
+  </div>
+</div>
+
+<script src="produtos.js"></script>
+<script>
+const P=window.PRODUTOS;
+P.forEach(p=>{p.c=p.filtro;p.n=p.nome;p.b=p.etiqueta;p.col=p.cores||['#1b4d6b','#3fc1c9'];p.d=p.descricao;p.i=p.destaques||[];p.t=p.ficha||[];
+  p.img=p.imagem||(p.fotos360?p.fotos360.pasta+'1.'+(p.fotos360.extensao||'jpg'):null);});
+const g=document.getElementById('grid');
+P.forEach((p,k)=>{
+  g.insertAdjacentHTML('beforeend',`<article class="prod reveal" data-c="${p.c}" onclick="openM(${k})">
+   <div class="art" style="background:${p.img?`url('${p.img}') center/cover,`:''}linear-gradient(135deg,${p.col[0]},#0b1014)">
+    ${p.img?'':`<svg viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="${p.col[1]}" stroke-opacity=".45">
+     ${Array.from({length:9},(_,i)=>`<circle cx="${40+i*33+(i%2)*10}" cy="${45+(i%3)*30}" r="${14+(i*7)%22}"/>`).join('')}
+    </g></svg>`}<span class="badge" style="color:${p.col[1]}">${p.b}</span></div>
+   <div class="body"><h3>${p.n}</h3><p>${p.d}</p><ul>${p.i.map(x=>`<li>${x}</li>`).join('')}</ul>
+   <div class="b3d"><span class="more">Ver detalhes →</span><button onclick="event.stopPropagation();go3D(${k})">⟳ Girar em 3D</button></div></div></article>`);
+});
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  document.querySelectorAll('.prod').forEach(p=>p.classList.toggle('hide',b.dataset.f!=='all'&&p.dataset.c!==b.dataset.f));
+});
+function openM(k){const p=P[k];mt.textContent=p.n;md.textContent=p.d;
+  mtab.innerHTML=p.t.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');modal.classList.add('open')}
+function closeM(){modal.classList.remove('open')}
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>links.classList.remove('open'));
+window.P=P;window.openM=openM;
+function go3D(k){document.getElementById('showroom').scrollIntoView({behavior:'smooth'});if(window.showProd)window.showProd(k);else window.pending3D=k;}
+</script>
+
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const P = window.P;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+stage.prepend(renderer.domElement);
+document.getElementById('loading').remove();
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+const HOME = new THREE.Vector3(4.6, 2.8, 5.6);
+camera.position.copy(HOME);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.enablePan = false;
+controls.autoRotate = true; controls.autoRotateSpeed = 1.6;
+controls.minDistance = 3; controls.maxDistance = 12;
+controls.maxPolarAngle = Math.PI * 0.53;
+controls.target.set(0, 1, 0);
+
+const key = new THREE.DirectionalLight(0xffffff, 2.2);
+key.position.set(4, 7, 4); key.castShadow = true;
+key.shadow.mapSize.set(1024, 1024);
+Object.assign(key.shadow.camera, {left:-4, right:4, top:4, bottom:-4});
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x3fc1c9, 1.2); rim.position.set(-5, 3, -4); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x223344, 0.5));
+
+// Pedestal
+const ped = new THREE.Mesh(new THREE.CylinderGeometry(3, 3.15, 0.18, 64),
+  new THREE.MeshStandardMaterial({color:0x1a252d, roughness:.6, metalness:.3}));
+ped.position.y = -0.09; ped.receiveShadow = true; scene.add(ped);
+const ring = new THREE.Mesh(new THREE.TorusGeometry(3.02, 0.025, 8, 96),
+  new THREE.MeshBasicMaterial({color:0xf5a524}));
+ring.rotation.x = Math.PI/2; scene.add(ring);
+
+// Textura da espuma (células)
+function foamTex(base='#e8c35a'){
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d'); g.fillStyle = base; g.fillRect(0,0,256,256);
+  for(let i=0;i<900;i++){
+    const x=Math.random()*256, y=Math.random()*256, r=1+Math.random()*4;
+    g.beginPath(); g.arc(x,y,r,0,7);
+    g.fillStyle = Math.random()<.5 ? 'rgba(150,100,20,.35)' : 'rgba(255,240,190,.45)'; g.fill();
+  }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2,2);
+  t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const foamMat = new THREE.MeshStandardMaterial({map:foamTex(), roughness:.95});
+const steel = new THREE.MeshStandardMaterial({color:0xdfe5ea, metalness:.75, roughness:.3});
+const white = new THREE.MeshStandardMaterial({color:0xf3f5f7, roughness:.45});
+const dark = new THREE.MeshStandardMaterial({color:0x2a2f35, roughness:.7, metalness:.2});
+
+function mesh(geo, mat, x=0, y=0, z=0){
+  const m = new THREE.Mesh(geo, mat); m.position.set(x,y,z);
+  m.castShadow = true; m.receiveShadow = true; return m;
+}
+const box = (w,h,d,mat,x,y,z) => mesh(new THREE.BoxGeometry(w,h,d), mat, x,y,z);
+
+// --- Modelos ---
+function painelFrio(){ // painel sanduíche frigorífico em corte
+  const g = new THREE.Group();
+  g.add(box(3, 2.2, 0.6, foamMat, 0, 1.2, 0));
+  g.add(box(3.02, 2.22, 0.04, steel, 0, 1.2, 0.32));
+  g.add(box(3.02, 2.22, 0.04, steel, 0, 1.2, -0.32));
+  for(let i=-1;i<=1;i+=0.5) g.add(box(0.03, 2.22, 0.02, steel, i, 1.2, 0.35));
+  g.rotation.y = -0.4; return g;
+}
+function telha(){ // telha termoacústica
+  const g = new THREE.Group(), L = 3;
+  g.add(box(2.6, 0.04, L, steel, 0, 0.3, 0));
+  g.add(box(2.6, 0.4, L, foamMat, 0, 0.52, 0));
+  g.add(box(2.6, 0.04, L, steel, 0, 0.74, 0));
+  for(let x=-1.1; x<=1.11; x+=0.55){
+    g.add(box(0.28, 0.28, L, foamMat, x, 0.9, 0));
+    g.add(box(0.3, 0.03, L, steel, x, 1.05, 0));
+    g.add(box(0.03, 0.3, L, steel, x-0.15, 0.9, 0));
+    g.add(box(0.03, 0.3, L, steel, x+0.15, 0.9, 0));
+  }
+  g.position.y = 0.2; return g;
+}
+function bau(){ // caminhão com baú frigorífico (traseira aberta mostrando a espuma)
+  const g = new THREE.Group(), t = 0.16;
+  const wall = (w,h,d,x,y,z) => { g.add(box(w,h,d,foamMat,x,y,z)); };
+  const L=2.6, W=1.5, H=1.4, y0=0.75;
+  wall(L, t, W, 0, y0, 0); wall(L, t, W, 0, y0+H, 0);
+  wall(L, H, t, 0, y0+H/2, W/2-t/2); wall(L, H, t, 0, y0+H/2, -W/2+t/2);
+  wall(t, H, W, -L/2+t/2, y0+H/2, 0);
+  g.add(box(L+.02, H+t+.02, 0.02, white, 0, y0+H/2+t/2, W/2+.01));
+  g.add(box(L+.02, H+t+.02, 0.02, white, 0, y0+H/2+t/2, -W/2-.01));
+  g.add(box(L+.02, 0.02, W+.04, white, 0, y0+H+t/2+.01, 0));
+  g.add(box(0.02, H+t, W+.04, white, -L/2-.01, y0+H/2+t/2, 0));
+  g.add(box(3.6, 0.15, 0.9, dark, -0.3, 0.6, 0));
+  const cab = box(0.9, 1.1, 1.4, new THREE.MeshStandardMaterial({color:0xf5a524, roughness:.4, metalness:.3}), -1.75, 1.15, 0);
+  g.add(cab);
+  g.add(box(0.02, 0.45, 1.2, new THREE.MeshStandardMaterial({color:0x223344, metalness:.9, roughness:.1}), -2.21, 1.35, 0));
+  const wg = new THREE.CylinderGeometry(0.3,0.3,0.22,24);
+  [[-1.7,.78],[-1.7,-.78],[0.6,.78],[0.6,-.78],[1.1,.78],[1.1,-.78]].forEach(([x,z])=>{
+    const w = mesh(wg, dark, x, 0.3, z); w.rotation.x = Math.PI/2; g.add(w);
+  });
+  g.position.x = 0.3; g.rotation.y = 0.6; return g;
+}
+function boia(){ // boia naval com quarto em corte
+  const g = new THREE.Group();
+  const orange = new THREE.MeshStandardMaterial({color:0xff6a1a, roughness:.45, side:THREE.DoubleSide});
+  g.add(mesh(new THREE.CylinderGeometry(0.96,0.96,1.8,48), foamMat, 0, 1.3, 0));
+  g.add(mesh(new THREE.CylinderGeometry(1,1,1.8,48,1,true,Math.PI*0.5,Math.PI*1.5), orange, 0, 1.3, 0));
+  const cap = new THREE.SphereGeometry(1, 48, 16, 0, Math.PI*2, 0, Math.PI/2);
+  const top = mesh(cap, orange, 0, 2.2, 0); top.scale.y = 0.35; g.add(top);
+  const bot = mesh(cap, orange, 0, 0.4, 0); bot.scale.y = -0.35; g.add(bot);
+  const eye = mesh(new THREE.TorusGeometry(0.2, 0.05, 12, 32), steel, 0, 2.7, 0); g.add(eye);
+  const band = mesh(new THREE.TorusGeometry(1.01, 0.04, 8, 64), white, 0, 1.8, 0); band.rotation.x = Math.PI/2; g.add(band);
+  g.position.y = 0.1; return g;
+}
+function moldado(){ // peça semi-rígida moldada (apoio de braço) + corte
+  const g = new THREE.Group();
+  const soft = new THREE.MeshStandardMaterial({color:0x3a3f47, roughness:.9});
+  const a = mesh(new THREE.CapsuleGeometry(0.45, 2.2, 10, 32), soft, -0.3, 1.1, -0.6);
+  a.rotation.z = Math.PI/2; a.scale.set(1, 1, 0.65); g.add(a);
+  const half = mesh(new THREE.CapsuleGeometry(0.45, 1.2, 10, 32), new THREE.MeshStandardMaterial({map:foamTex('#efe2b8'), roughness:.95}), 0.4, 0.5, 0.9);
+  half.rotation.z = Math.PI/2; half.scale.set(1, 1, 0.65); g.add(half);
+  g.add(mesh(new THREE.TorusGeometry(0.47, 0.03, 8, 48), soft, 0.4, 0.5, 0.9).rotateY(Math.PI/2));
+  return g;
+}
+function tambor(){ // tambor de 200 L de MDI
+  const g = new THREE.Group();
+  const blue = new THREE.MeshStandardMaterial({color:0x1f5fa8, metalness:.55, roughness:.35});
+  g.add(mesh(new THREE.CylinderGeometry(0.8,0.8,2.2,64), blue, 0, 1.1, 0));
+  [0.02, 0.75, 1.45, 2.18].forEach(y => {
+    const r = mesh(new THREE.TorusGeometry(0.81, 0.045, 10, 64), blue, 0, y, 0); r.rotation.x = Math.PI/2; g.add(r);
+  });
+  const lc = document.createElement('canvas'); lc.width = 1024; lc.height = 256;
+  const x = lc.getContext('2d'); x.fillStyle = '#f4f4f0'; x.fillRect(0,0,1024,256);
+  x.fillStyle = '#f5a524'; x.fillRect(0,0,1024,26); x.fillRect(0,230,1024,26);
+  x.fillStyle = '#111'; x.font = 'bold 80px sans-serif'; x.fillText('MDI', 60, 140);
+  x.font = '36px sans-serif'; x.fillText('Componente B · Isocianato', 60, 200);
+  x.font = 'bold 80px sans-serif'; x.fillText('MDI', 580, 140);
+  x.font = '36px sans-serif'; x.fillText('Componente B · Isocianato', 580, 200);
+  const lt = new THREE.CanvasTexture(lc); lt.colorSpace = THREE.SRGBColorSpace;
+  g.add(mesh(new THREE.CylinderGeometry(0.805,0.805,0.55,64,1,true), new THREE.MeshStandardMaterial({map:lt, roughness:.6}), 0, 1.1, 0));
+  g.add(mesh(new THREE.CylinderGeometry(0.1,0.1,0.06,24), steel, 0.4, 2.22, 0));
+  g.add(mesh(new THREE.CylinderGeometry(0.06,0.06,0.06,24), steel, -0.45, 2.22, 0.1));
+  return g;
+}
+const BUILDERS = {painel:painelFrio, telha, bau, boia, moldado, tambor};
+
+const spin = document.getElementById('spin');
+const canvas = renderer.domElement;
+const loader = new GLTFLoader();
+let current = null, idx = 0, spinIn = 0, token = 0;
+let frames = null, frame = 0, dragging = false, zoom = 1, lastStep = 0;
+
+function msg(t){
+  let m = stage.querySelector('.msg3d');
+  if(!t){ if(m) m.remove(); return; }
+  if(!m){ m = document.createElement('div'); m.className = 'msg3d'; stage.appendChild(m); }
+  m.innerHTML = t;
+}
+function clear3D(){
+  if(current){ scene.remove(current); current.traverse(o=>o.geometry&&o.geometry.dispose()); current = null; }
+}
+function put3D(obj){
+  clear3D(); frames = null;
+  spin.style.display = 'none'; canvas.style.display = 'block';
+  current = obj; current.scale.setScalar(0.01); spinIn = 1; scene.add(current);
+}
+function fit(obj){ // centraliza e ajusta o tamanho de um modelo .glb qualquer
+  obj.traverse(o=>{ if(o.isMesh){ o.castShadow = o.receiveShadow = true; } });
+  let box = new THREE.Box3().setFromObject(obj);
+  const size = box.getSize(new THREE.Vector3());
+  obj.scale.setScalar(3 / Math.max(size.x, size.y, size.z, 0.0001));
+  box = new THREE.Box3().setFromObject(obj);
+  const c = box.getCenter(new THREE.Vector3());
+  obj.position.x -= c.x; obj.position.z -= c.z; obj.position.y -= box.min.y;
+  const g = new THREE.Group(); g.add(obj); return g;
+}
+function loadGLB(url, fallback){
+  const my = ++token; msg('Carregando modelo 3D…');
+  loader.load(url, gltf => { if(my !== token) return; msg(); put3D(fit(gltf.scene)); },
+    undefined, () => {
+      if(my !== token) return;
+      if(fallback && BUILDERS[fallback]) { put3D(BUILDERS[fallback]()); msg(); }
+      else { clear3D(); msg('Não foi possível abrir o modelo 3D.<br><small>Arquivos .glb só aparecem com o site publicado na internet (ou testando arrastando o arquivo aqui).</small>'); }
+    });
+}
+function showFrames(urls){
+  ++token; clear3D(); msg();
+  frames = urls; frame = 0; zoom = 1; spin.style.transform = '';
+  urls.forEach(u => { const i = new Image(); i.src = u; }); // pré-carrega
+  canvas.style.display = 'none'; spin.style.display = 'block'; spin.src = urls[0];
+  spin.onerror = () => msg('Fotos não encontradas.<br><small>Confira o nome da pasta e se as fotos se chamam 1.jpg, 2.jpg, 3.jpg…</small>');
+  spin.onload = () => msg();
+}
+function setFrame(f){ if(!frames) return; frame = ((f % frames.length) + frames.length) % frames.length; spin.src = frames[frame]; }
+
+function showProd(k){
+  idx = k; const p = P[k];
+  if(p.fotos360){
+    const f = p.fotos360, ext = f.extensao || 'jpg', urls = [];
+    for(let i = 1; i <= (f.quantidade || 24); i++) urls.push(f.pasta + i + '.' + ext);
+    showFrames(urls);
+  } else if(p.modelo){
+    loadGLB(p.modelo, p.forma);
+  } else {
+    ++token; msg(); put3D((BUILDERS[p.forma] || tambor)());
+  }
+  document.getElementById('sn').textContent = p.n;
+  document.getElementById('sb').textContent = p.b;
+  document.querySelectorAll('.pitem').forEach((b,i)=>b.classList.toggle('on', i===k));
+}
+window.showProd = showProd;
+
+// Girar as fotos 360° arrastando
+let sx = 0, f0 = 0;
+spin.addEventListener('pointerdown', e => { dragging = true; sx = e.clientX; f0 = frame; spin.setPointerCapture(e.pointerId); });
+spin.addEventListener('pointermove', e => { if(dragging) setFrame(f0 - Math.round((e.clientX - sx) / 12)); });
+spin.addEventListener('pointerup', () => dragging = false);
+spin.addEventListener('pointercancel', () => dragging = false);
+spin.addEventListener('wheel', e => { e.preventDefault(); zoom = Math.min(2.5, Math.max(1, zoom - e.deltaY * 0.0015)); spin.style.transform = `scale(${zoom})`; }, {passive:false});
+
+// Testar arrastando arquivos para o showroom (não salva nada)
+const drop = document.getElementById('drop');
+['dragenter','dragover'].forEach(ev => stage.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('on'); }));
+drop.addEventListener('dragleave', () => drop.classList.remove('on'));
+drop.addEventListener('drop', e => {
+  e.preventDefault(); drop.classList.remove('on');
+  const files = [...e.dataTransfer.files];
+  const glb = files.find(f => /\.(glb|gltf)$/i.test(f.name));
+  document.getElementById('sb').textContent = 'Pré-visualização · não fica salvo';
+  document.querySelectorAll('.pitem').forEach(b=>b.classList.remove('on'));
+  if(glb){ document.getElementById('sn').textContent = glb.name; loadGLB(URL.createObjectURL(glb)); return; }
+  const imgs = files.filter(f => f.type.startsWith('image/')).sort((a,b) => a.name.localeCompare(b.name, undefined, {numeric:true}));
+  if(imgs.length){ document.getElementById('sn').textContent = imgs.length + ' fotos'; showFrames(imgs.map(f => URL.createObjectURL(f))); }
+  else msg('Arraste um arquivo .glb ou as fotos (.jpg / .png).');
+});
+
+const list = document.getElementById('plist');
+P.forEach((p,k)=>{
+  const b = document.createElement('button'); b.className = 'pitem';
+  b.innerHTML = `<small>${p.b}</small>${p.n}`; b.onclick = () => showProd(k); list.appendChild(b);
+});
+
+const bRot = document.getElementById('bRot');
+bRot.onclick = () => { controls.autoRotate = !controls.autoRotate; bRot.classList.toggle('on', controls.autoRotate); };
+document.getElementById('bReset').onclick = () => {
+  camera.position.copy(HOME); controls.target.set(0,1,0);
+  if(frames){ setFrame(0); zoom = 1; spin.style.transform = ''; }
+};
+document.getElementById('bInfo').onclick = () => window.openM(idx);
+
+function resize(){
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage); resize();
+
+showProd(window.pending3D ?? 0);
+
+let visible = true;
+new IntersectionObserver(e => visible = e[0].isIntersecting).observe(stage);
+renderer.setAnimationLoop(t => {
+  if(!visible) return;
+  if(frames){
+    if(controls.autoRotate && !dragging && t - lastStep > 90){ lastStep = t; setFrame(frame + 1); }
+    return;
+  }
+  if(current && spinIn > 0){ spinIn = Math.max(0, spinIn - 0.04); const s = 1 - spinIn*spinIn; current.scale.setScalar(s); current.rotation.y += spinIn*0.15; }
+  controls.update(); renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
